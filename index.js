@@ -10,8 +10,7 @@ const port = process.env.PORT || 5000;
 //     origin: []
 // }))
 
-// monazila
-// QPUMvkw8EO43HmFq
+
 
 app.use(cors())
 app.use(express.json())
@@ -34,6 +33,12 @@ async function run() {
     await client.connect();
 
     const paintingCollection = client.db("paintingDB").collection("painting")
+
+    app.get('/painting', async(req, res) => {
+        const cursor = paintingCollection.find()
+        const result = await cursor.toArray()
+        res.send(result)
+    })
 
     app.post('/painting', async(req, res) => {
         const painting = req.body
