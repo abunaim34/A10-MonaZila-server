@@ -46,11 +46,11 @@ async function run() {
       res.send(result)
     })
 
-    app.get('/painting/:id', async(req, res) => {
-        const id = req.params.id
-        const query = {_id: new ObjectId(id)}
-        const result = await paintingCollection.findOne(query)
-        res.send(result)
+    app.get('/painting/:id', async (req, res) => {
+      const id = req.params.id
+      const query = { _id: new ObjectId(id) }
+      const result = await paintingCollection.findOne(query)
+      res.send(result)
     })
 
     app.post('/paintings', async (req, res) => {
@@ -59,7 +59,34 @@ async function run() {
       res.send(result)
     })
 
-    app.delete()
+    app.put('/painting/:id', async (req, res) => {
+      const id = req.params.id
+      const filter = { _id: new ObjectId(id) }
+      const options = { upsert: true };
+      const updateArt = req.body
+      const artItems = {
+        $set: {
+          item_name: updateArt.item_name,
+          price: updateArt.price,
+          subcategory_Name: updateArt.subcategory_Name,
+          customization: updateArt.customization,
+          processing_time: updateArt.processing_time,
+          stockStatus: updateArt.stockStatus,
+          image: updateArt.image,
+          rating: updateArt.rating,
+          short_description: updateArt.short_description,
+        },
+      };
+      const result = await paintingCollection.updateOne(filter, artItems, options)
+      res.send(result)
+    })
+
+    app.delete('/painting/:id', async (req, res) => {
+      const id = req.params.id
+      const query = { _id: new ObjectId(id) }
+      const result = await paintingCollection.deleteOne(query)
+      res.send(result)
+    })
 
 
     // Send a ping to confirm a successful connection
