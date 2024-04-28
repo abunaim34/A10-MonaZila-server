@@ -6,13 +6,13 @@ const app = express()
 const port = process.env.PORT || 5000;
 
 // midleware
-// app.use(cors({
-//     origin: []
-// }))
+app.use(cors({
+    origin: ["http://localhost:5173", "https://monazila-852ee.web.app"]
+}))
 
 
 
-app.use(cors())
+// app.use(cors())
 app.use(express.json())
 
 
@@ -30,7 +30,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
 
     const paintingCollection = client.db("paintingDB").collection("painting")
 
