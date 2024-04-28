@@ -1,5 +1,5 @@
 const express = require('express');
-const cors = require('cors'); 
+const cors = require('cors');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config()
 const app = express()
@@ -7,7 +7,7 @@ const port = process.env.PORT || 5000;
 
 // midleware
 app.use(cors({
-    origin: ["http://localhost:5173", "https://monazila-852ee.web.app"]
+  origin: ["http://localhost:5173", "https://monazila-852ee.web.app"]
 }))
 
 
@@ -34,10 +34,16 @@ async function run() {
 
     const paintingCollection = client.db("paintingDB").collection("painting")
 
-    app.get('/painting', async(req, res) => {
-        const cursor = paintingCollection.find()
-        const result = await cursor.toArray()
-        res.send(result)
+    app.get('/paintings', async (req, res) => {
+      const cursor = paintingCollection.find()
+      const result = await cursor.toArray()
+      res.send(result)
+    })
+
+    app.get('/paintings/:email', async (req, res) => {
+      const cursor = paintingCollection.find({ email: req.params.email })
+      const result = await cursor.toArray()
+      res.send(result)
     })
 
     app.get('/painting/:id', async(req, res) => {
@@ -47,14 +53,15 @@ async function run() {
         res.send(result)
     })
 
-    app.post('/painting', async(req, res) => {
-        const painting = req.body
-        const result = await paintingCollection.insertOne(painting)
-        res.send(result)
+    app.post('/paintings', async (req, res) => {
+      const painting = req.body
+      const result = await paintingCollection.insertOne(painting)
+      res.send(result)
     })
 
+
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
@@ -65,9 +72,9 @@ run().catch(console.dir);
 
 
 app.get("/", (req, res) => {
-    res.send("My Monazila is running")
+  res.send("My Monazila is running")
 })
 
 app.listen(port, () => {
-    console.log(`My Monazila is running on port: ${port}`);
+  console.log(`My Monazila is running on port: ${port}`);
 })
