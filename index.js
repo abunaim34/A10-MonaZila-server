@@ -33,6 +33,7 @@ async function run() {
     // await client.connect();
 
     const paintingCollection = client.db("paintingDB").collection("painting")
+    const subcategoryCollection = client.db("paintingDB").collection("subCategory")
 
     app.get('/paintings', async (req, res) => {
       const cursor = paintingCollection.find()
@@ -50,6 +51,24 @@ async function run() {
       const id = req.params.id
       const query = { _id: new ObjectId(id) }
       const result = await paintingCollection.findOne(query)
+      res.send(result)
+    })
+
+    app.get("/paint/:subcategory_Name", async (req, res) => {
+      const cursor = paintingCollection.find({ subcategory_Name: req.params.subcategory_Name })
+      const result = await cursor.toArray()
+      res.send(result)
+    })
+
+    app.get('/subCategory', async (req, res) => {
+      const cursor = subcategoryCollection.find()
+      const result = await cursor.toArray()
+      res.send(result)
+    })
+
+    app.get("/subCategory/:subcategory_Name", async (req, res) => {
+      const cursor = subcategoryCollection.find({ subcategory_Name: req.params.subcategory_Name })
+      const result = await cursor.toArray()
       res.send(result)
     })
 
