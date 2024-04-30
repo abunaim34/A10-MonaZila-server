@@ -9,10 +9,6 @@ const port = process.env.PORT || 5000;
 app.use(cors({
   origin: ["http://localhost:5173", "https://monazila-852ee.web.app"]
 }))
-
-
-
-// app.use(cors())
 app.use(express.json())
 
 
